@@ -1,0 +1,3210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HURE Marketing Site (Single-File Demo)</title>
+
+    <!-- Tailwind (CDN build for quick demo) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollToPlugin.min.js"></script>
+
+    <!-- React 18 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel for in-browser JSX transform (demo-only) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      html, body { 
+        height: 100%; 
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .hero-title, .hero-section .hero-title, .hero-section h1.hero-title {
+        font-family: 'Times New Roman', Times, serif !important;
+        color: #1a2a36 !important;
+      }
+      body { margin: 0; }
+      .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+      
+      /* Smooth transitions for theme switching */
+      * {
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      }
+      
+      /* Modern 3D and Animation Effects */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+      
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      /* New animations */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes bounceIn {
+        0%, 20%, 40%, 60%, 80%, 100% {
+          animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        }
+        0% {
+          opacity: 0;
+          transform: scale3d(0.3, 0.3, 0.3);
+        }
+        20% {
+          transform: scale3d(1.1, 1.1, 1.1);
+        }
+        40% {
+          transform: scale3d(0.9, 0.9, 0.9);
+        }
+        60% {
+          opacity: 1;
+          transform: scale3d(1.03, 1.03, 1.03);
+        }
+        80% {
+          transform: scale3d(0.97, 0.97, 0.97);
+        }
+        100% {
+          opacity: 1;
+          transform: scale3d(1, 1, 1);
+        }
+      }
+      
+      @keyframes rotateIn {
+        from {
+          transform: rotate(-200deg);
+          opacity: 0;
+        }
+        to {
+          transform: rotate(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale3d(0.3, 0.3, 0.3);
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+      
+      .animate-fadeIn { animation: fadeIn 1s ease-in; }
+      .animate-bounceIn { animation: bounceIn 1s both; }
+      .animate-rotateIn { animation: rotateIn 1s ease-in-out; }
+      .animate-zoomIn { animation: zoomIn 0.8s ease-in-out; }
+      
+      .animate-fadeInUp {
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+      
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .animate-pulse {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      
+      .animate-slideInRight {
+        animation: slideInRight 0.8s ease-out forwards;
+      }
+      
+      .animate-slideInLeft {
+        animation: slideInLeft 0.8s ease-out forwards;
+      }
+      
+      .animate-scaleIn {
+        animation: scaleIn 0.6s ease-out forwards;
+      }
+      
+      /* New animation classes */
+      .animate-fadeIn {
+        animation: fadeIn 1s ease-in;
+      }
+      
+      .animate-bounceIn {
+        animation: bounceIn 1s both;
+      }
+      
+      .animate-rotateIn {
+        animation: rotateIn 1s ease-in-out;
+      }
+      
+      .animate-zoomIn {
+        animation: zoomIn 0.8s ease-in-out;
+      }
+      
+      /* Enhanced hover effects */
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      
+      .hover-scale:hover {
+        transform: scale(1.05);
+      }
+      
+      .hover-rotate {
+        transition: transform 0.3s ease;
+      }
+      
+      .hover-rotate:hover {
+        transform: rotate(5deg);
+      }
+      
+      /* Gradient backgrounds */
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      
+      .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      /* Shadow effects */
+      .shadow-glow {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+      }
+      
+      .shadow-glow:hover {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+      }
+      
+      /* 3D Card Effects */
+      .card-3d {
+        transform-style: preserve-3d;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+      }
+      
+      .card-3d:hover {
+        transform: translateY(-12px) rotateX(5deg);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-3d::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        padding: 2px;
+        background: linear-gradient(135deg, transparent 40%, rgba(13, 148, 136, 0.2) 100%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      
+      .card-3d:hover::before {
+        opacity: 1;
+      }
+      
+      /* Modern Button Effects */
+      .btn-modern {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      .btn-modern::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+      
+      .btn-modern:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+      
+      .btn-modern:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3);
+      }
+      
+      /* Glass Morphism Effect */
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      
+      /* Floating Elements */
+      .floating-element {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.1;
+      }
+      
+      /* Stats Counter Animation */
+      .stat-number {
+        transition: all 0.3s ease;
+      }
+      
+      .stat-box:hover .stat-number {
+        transform: scale(1.1);
+        color: #0D9488;
+      }
+      
+      /* Stagger Animation Delays */
+      .delay-100 { animation-delay: 0.1s; }
+      .delay-200 { animation-delay: 0.2s; }
+      .delay-300 { animation-delay: 0.3s; }
+      .delay-400 { animation-delay: 0.4s; }
+      .delay-500 { animation-delay: 0.5s; }
+      .delay-600 { animation-delay: 0.6s; }
+      
+      /* Smooth Scroll */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Nav Sticky Effect */
+      .sticky-nav {
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      
+      /* Team Member Cards */
+      .team-card {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      .team-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(13, 148, 136, 0.1);
+        transition: left 0.5s;
+      }
+      
+      .team-card:hover::after {
+        left: 100%;
+      }
+      
+      /* Price Card Highlight */
+      .price-card-highlight {
+        transform: scale(1.05);
+        z-index: 10;
+        position: relative;
+      }
+      
+      /* Scroll Reveal */
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      .scroll-reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Icon Animations */
+      .icon-bounce {
+        transition: transform 0.3s;
+      }
+      
+      .icon-bounce:hover {
+        transform: translateY(-5px);
+      }
+      
+      /* Progress Bar Effect */
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: #0D9488;
+        z-index: 9999;
+        transition: width 0.2s;
+      }
+      
+      /* Decorative Shapes */
+      .shape-blob {
+        position: absolute;
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        opacity: 0.05;
+        pointer-events: none;
+      }
+      
+      /* Number Counter */
+      @keyframes countUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      .count-up {
+        animation: countUp 0.8s ease-out;
+      }
+      
+      /* Parallax Container */
+      .parallax-container {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      /* 3D Perspective */
+      .perspective-container {
+        perspective: 1000px;
+        perspective-origin: center;
+      }
+      
+      /* Tilt Effect */
+      .tilt-card {
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+      }
+      
+      /* Magnetic Button */
+      .magnetic-btn {
+        position: relative;
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      /* Particle Background */
+      .particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+      
+      /* Glow Effect */
+      .glow-effect {
+        position: relative;
+      }
+      
+      .glow-effect::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        padding: 2px;
+        background: linear-gradient(45deg, transparent, rgba(13, 148, 136, 0.5), transparent);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        animation: glow-pulse 3s ease-in-out infinite;
+      }
+      
+      @keyframes glow-pulse {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+      }
+      
+      /* Morphing Blob */
+      @keyframes morph {
+        0%, 100% {
+          border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+        25% {
+          border-radius: 60% 40% 50% 50% / 55% 45% 55% 45%;
+        }
+        50% {
+          border-radius: 50% 50% 40% 60% / 50% 60% 40% 50%;
+        }
+        75% {
+          border-radius: 45% 55% 60% 40% / 60% 40% 60% 40%;
+        }
+      }
+      
+      .morphing-blob {
+        animation: morph 20s ease-in-out infinite, float 8s ease-in-out infinite;
+      }
+      
+      /* Text Gradient Animation */
+      @keyframes gradient-shift {
+        0%, 100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      
+      .animated-gradient-text {
+        background: linear-gradient(90deg, #0D9488, #14B8A6, #2DD4BF, #14B8A6, #0D9488);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradient-shift 4s ease infinite;
+        font-weight: 900;
+      }
+      
+      /* Scroll Progress Bar */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0D9488, #14B8A6);
+        z-index: 10000;
+        transform-origin: left;
+      }
+      
+      /* Mouse Follow Cursor */
+      .custom-cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #0D9488;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.2s;
+      }
+      
+      /* Reveal Text Animation */
+      .reveal-text {
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      }
+      
+      /* 3D Flip Card */
+      .flip-card {
+        perspective: 1000px;
+      }
+      
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+      
+      /* Ripple Effect */
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(0);
+        animation: ripple-animation 0.6s ease-out;
+      }
+      
+      @keyframes ripple-animation {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+      
+      /* Infinite Scroll Logos */
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      
+      .scroll-container {
+        animation: scroll-left 30s linear infinite;
+      }
+      
+      /* Stagger Children */
+      .stagger-children > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Theme Toggle Animation */
+      .theme-toggle {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .theme-toggle::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(13, 148, 136, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+      
+      .theme-toggle:hover::after {
+        width: 200%;
+        height: 200%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useEffect, useMemo, useState } = React;
+
+      /**
+       * HURE — Demo Marketing Site + "Backend" Editor
+       * -------------------------------------------------
+       * Single-file HTML demo:
+       * - Clean marketing homepage
+       * - Right-side Admin Editor (demo backend) that can edit:
+       *   - Nav labels + links
+       *   - Theme colors
+       *   - All section copy
+       *   - Add/remove/reorder product cards
+       * - Persistence via localStorage
+       *
+       * Open editor:
+       * - Add ?admin=1 to the URL, or click "Admin" in the footer.
+       */
+
+      const LS_KEY = "hure_site_content_v2";
+      const ADMIN_KEY = "hure_admin_auth_v1";
+
+      // Admin credentials (in a real app, this would be server-side)
+      const ADMIN_CREDENTIALS = {
+        username: "superadmin",
+        password: "hure2025",
+        role: "superadmin"
+      };
+
+      const DEFAULT_CONTENT = {
+        theme: {
+          // Light mode colors
+          pageBg: "#FFFFFF",
+          surfaceBg: "#F8FAFC",
+          cardBg: "#FFFFFF",
+          text: "#0F172A",
+          muted: "#64748B",
+          primary: "#0D9488", // teal-600
+          primaryHover: "#14B8A6", // teal-500
+          primaryDark: "#115E59", // teal-800-ish
+          border: "#E2E8F0",
+          footerBg: "#0F766E", // teal-700
+          // Dark mode colors
+          darkPageBg: "#0F172A",
+          darkSurfaceBg: "#1E293B",
+          darkCardBg: "#1E293B",
+          darkText: "#F1F5F9",
+          darkMuted: "#94A3B8",
+          darkBorder: "#334155",
+          darkFooterBg: "#020617",
+        },
+        brand: {
+          name: "HURE",
+          acronym: "Healthcare Unified Resource Engine",
+          instagramUrl: "https://www.instagram.com/gethure",
+          email: "info@gethure.com",
+          location: "Nairobi, Kenya",
+        },
+        nav: {
+          links: [
+            { label: "Platform", href: "#platform" },
+            { label: "Products", href: "#products" },
+            { label: "Pricing", href: "#pricing" },
+            { label: "About", href: "#about" },
+            { label: "Contact", href: "#contact" },
+          ],
+          ctas: {
+            left: { label: "Sign In", href: "#" },
+            right: { label: "Request Demo", href: "#contact" },
+          },
+        },
+        hero: {
+          headlinePrefix: "The Operating System for",
+          headlineAccent: "Modern Healthcare",
+          body:
+            "HURE unifies workforce management, patient care, on-demand staffing, and medical supplies into one connected healthcare platform.",
+          primaryCta: { label: "Explore Ecosystem", href: "#platform" },
+          secondaryCta: { label: "Request Demo", href: "#contact" },
+          trustTitle: "Trusted by clinics & hospitals",
+          trustBullets: [
+            "Built for African healthcare workflows",
+            "Modular, scalable & compliant",
+            "One platform, multiple solutions",
+          ],
+        },
+        ecosystem: {
+          title: "The HURE Ecosystem",
+          subtitle: "Choose what you need today. Scale when you’re ready.",
+          cards: [
+            {
+              key: "core",
+              title: "HURE Core",
+              subtitle: "HR & Workforce Management",
+              bullets: [
+                "Staff profiles & licensing",
+                "Onboarding & documents",
+                "Attendance, leave & rosters",
+                "Clinic & role management",
+              ],
+              cta: { label: "Launch Core", href: "https://core.gethure.com" },
+              badge: "",
+              disabled: false,
+            },
+            {
+              key: "care",
+              title: "HURE Care",
+              subtitle: "EMR & Practice Management",
+              bullets: ["Patient scheduling", "Clinical notes & records", "Lab & imaging orders", "Billing & payments"],
+              cta: { label: "Launch Care", href: "https://care.gethure.com" },
+              badge: "",
+              disabled: false,
+            },
+            {
+              key: "carestint",
+              title: "CareStint",
+              subtitle: "On-Demand Healthcare Staffing",
+              bullets: [
+                "Short-term & locum shifts",
+                "Clinics post open shifts",
+                "Professionals accept or bid",
+                "Fast role-based matching",
+              ],
+              cta: { label: "Visit CareStint", href: "https://stint.gethure.com" },
+              badge: "Live",
+              disabled: false,
+            },
+            {
+              key: "clinexo",
+              title: "Clinexo",
+              subtitle: "Medical Supplies Marketplace",
+              bullets: [
+                "Verified suppliers & catalog",
+                "Ordering & re-ordering",
+                "Delivery & fulfillment",
+                "Inventory visibility",
+              ],
+              cta: { label: "Coming Soon", href: "#" },
+              badge: "Coming Soon",
+              disabled: true,
+            },
+          ],
+        },
+        about: {
+          title: "About HURE",
+          p1:
+            "HURE is a healthcare technology platform built to help clinics and hospitals run smoother operations — from staffing and compliance to patient workflows, shift coverage, and supplies.",
+          p2:
+            "Start with HURE Core (HR & workforce) or HURE Care (EMR & practice management), then expand into CareStint for on-demand staffing and Clinexo for supplies.",
+          bullets: [
+            "Designed for East African healthcare workflows",
+            "Modular products that work better together",
+            "Built to scale from one clinic to multi-location networks",
+            "Clear pricing and simple onboarding",
+          ],
+          primaryCta: { label: "Request Demo", href: "#contact" },
+          secondaryCta: { label: "Contact Us", href: "#contact" },
+        },
+        how: {
+          title: "How HURE Works Together",
+          steps: [
+            { title: "Manage Staff", desc: "Hire, onboard & schedule teams in HURE Core" },
+            { title: "Care for Patients", desc: "Run clinical operations in HURE Care" },
+            { title: "Fill Gaps", desc: "Cover shifts instantly using CareStint" },
+            { title: "Stock Supplies", desc: "Order essentials through Clinexo" },
+          ],
+        },
+        pricing: {
+          title: "Simple, Product-Based Pricing",
+          subtitle:
+            "HURE is modular. Core (HR) and Care (EMR) are subscription products. CareStint and Clinexo are usage-based marketplaces.",
+          bundleNote: "Want both Core + Care? Bundle and save 20%.",
+          toggles: {
+            core: {
+              label: "Core Pricing",
+              productName: "HURE Core",
+              productDesc: "HR & Workforce Management",
+              tiers: [
+                {
+                  title: "Essential",
+                  price: "KSh 8,000",
+                  desc: "Perfect for small teams",
+                  meta: ["Max staff: 10", "Max locations: 1", "Max admin roles: 0"],
+                  highlight: false,
+                },
+                {
+                  title: "Professional",
+                  price: "KSh 15,000",
+                  desc: "Advanced tools for growing practices",
+                  meta: ["Max staff: 30", "Max locations: 2", "Max admin roles: 2"],
+                  highlight: true,
+                },
+                {
+                  title: "Enterprise",
+                  price: "KSh 25,000",
+                  desc: "Enterprise-grade for large networks",
+                  meta: ["Max staff: 50", "Max locations: 5", "Max admin roles: 10"],
+                  highlight: false,
+                },
+              ],
+            },
+            care: {
+              label: "Care Pricing",
+              productName: "HURE Care",
+              productDesc: "EMR & Practice Management",
+              tiers: [
+                {
+                  title: "Essential",
+                  price: "KSh 10,000",
+                  desc: "Basic care package for single clinics",
+                  meta: ["Max staff: 10", "Max locations: 1", "Max admin roles: 0"],
+                  highlight: false,
+                },
+                {
+                  title: "Professional",
+                  price: "KSh 18,000",
+                  desc: "Advanced care with labs & pharmacy",
+                  meta: ["Max staff: 30", "Max locations: 2", "Max admin roles: 0"],
+                  highlight: true,
+                },
+                {
+                  title: "Enterprise",
+                  price: "KSh 30,000",
+                  desc: "Enterprise-level care for hospital networks",
+                  meta: ["Max staff: 75", "Max locations: 5", "Max admin roles: 0"],
+                  highlight: false,
+                },
+              ],
+            },
+          },
+          marketplace: {
+            carestint: {
+              title: "CareStint",
+              subtitle: "On-demand staffing (Live)",
+              badge: "Live",
+              body: "No monthly subscription. Clinics only pay when a shift is successfully filled.",
+              bullets: [
+                "Percentage-based booking fee per filled shift",
+                "No charge for unfilled shifts",
+                "Professionals pay a small service fee",
+              ],
+              cta: { label: "Visit CareStint", href: "https://stint.gethure.com" },
+            },
+            clinexo: {
+              title: "Clinexo",
+              subtitle: "Supplies marketplace (Coming Soon)",
+              badge: "Coming Soon",
+              body: "Free to join for facilities. Pricing will be based on orders and supplier partnerships.",
+              bullets: ["No platform subscription", "Pay per order", "Transparent supplier pricing"],
+              cta: { label: "Coming Soon", href: "#" },
+            },
+          },
+        },
+        cta: {
+          title: "Ready to modernize your healthcare operations?",
+          subtitle: "Start with one product or adopt the full HURE ecosystem.",
+          button: { label: "Request a Demo", href: "#contact" },
+        },
+        footer: {
+          companyLinks: [
+            { label: "About", href: "#about" },
+            { label: "Pricing", href: "#pricing" },
+            { label: "FAQs", href: "#" },
+          ],
+        },
+      };
+
+      function safeParse(json) {
+        try { return JSON.parse(json); } catch { return null; }
+      }
+      function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+      function setByPath(obj, path, value) {
+        const parts = path.split(".");
+        const next = deepClone(obj);
+        let cur = next;
+        for (let i = 0; i < parts.length - 1; i++) {
+          const k = parts[i];
+          if (!(k in cur) || cur[k] == null) cur[k] = {};
+          cur = cur[k];
+        }
+        cur[parts[parts.length - 1]] = value;
+        return next;
+      }
+
+      function normalizeContent(maybe) {
+        if (!maybe || typeof maybe !== "object") return deepClone(DEFAULT_CONTENT);
+        const requiredTop = ["theme", "brand", "nav", "hero", "ecosystem", "about", "how", "pricing", "cta", "footer"];
+        for (const k of requiredTop) { if (!(k in maybe)) return deepClone(DEFAULT_CONTENT); }
+        return {
+          ...deepClone(DEFAULT_CONTENT),
+          ...maybe,
+          theme: { ...deepClone(DEFAULT_CONTENT.theme), ...(maybe.theme || {}) },
+          brand: { ...deepClone(DEFAULT_CONTENT.brand), ...(maybe.brand || {}) },
+          nav: {
+            ...deepClone(DEFAULT_CONTENT.nav),
+            ...(maybe.nav || {}),
+            ctas: { ...deepClone(DEFAULT_CONTENT.nav.ctas), ...(maybe.nav?.ctas || {}) },
+          },
+        };
+      }
+
+      function slugifyKey(s) {
+        const base = String(s || "product")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        return base || "product";
+      }
+
+      function uniqueKey(desired, existingKeys) {
+        let k = slugifyKey(desired);
+        if (!existingKeys.includes(k)) return k;
+        let i = 2;
+        while (existingKeys.includes(`${k}-${i}`)) i++;
+        return `${k}-${i}`;
+      }
+
+      function moveItem(arr, from, to) {
+        const next = arr.slice();
+        const [item] = next.splice(from, 1);
+        next.splice(to, 0, item);
+        return next;
+      }
+
+      function ConsultationForm() {
+        const [name, setName] = React.useState("");
+        const [phone, setPhone] = React.useState("");
+        const [message, setMessage] = React.useState("");
+        const [sent, setSent] = React.useState(false);
+        const [sending, setSending] = React.useState(false);
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          setSending(true);
+          // Simulate sending (replace with real email API in production)
+          setTimeout(() => {
+            setSent(true);
+            setSending(false);
+            setName("");
+            setPhone("");
+            setMessage("");
+          }, 1200);
+        };
+        if (sent) return <div className="mt-4 text-green-600 font-semibold">Thank you! We will reach out to you soon.</div>;
+        return (
+          <form className="mt-6 max-w-md mx-auto text-left" onSubmit={handleSubmit} autoComplete="off">
+            <div className="mb-3">
+              <input type="text" className="w-full border rounded-md px-3 py-2 text-sm" placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} required />
+            </div>
+            <div className="mb-3">
+              <input type="tel" className="w-full border rounded-md px-3 py-2 text-sm" placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)} required />
+            </div>
+            <div className="mb-3">
+              <textarea className="w-full border rounded-md px-3 py-2 text-sm min-h-[64px]" placeholder="How can we help?" value={message} onChange={e => setMessage(e.target.value)} required />
+            </div>
+            <button type="submit" className="btn-modern px-6 py-2 rounded-md font-semibold text-white" style={{ backgroundColor: '#0D9488' }} disabled={sending}>
+              {sending ? 'Sending...' : 'Submit'}
+            </button>
+            <div className="text-xs text-slate-500 mt-2">We will contact you by phone or email. Your email is not shown here and is only used to reach you.</div>
+          </form>
+        );
+      }
+
+      function HUREHomepage() {
+        const [pricingView, setPricingView] = useState("core");
+        const [darkMode, setDarkMode] = useState(() => {
+          const saved = localStorage.getItem('hure_dark_mode');
+          return saved ? JSON.parse(saved) : false;
+        });
+
+        const [adminAuth, setAdminAuth] = useState(() => {
+          const saved = safeParse(localStorage.getItem(ADMIN_KEY) || "");
+          // Check if session is expired (24 hours)
+          if (saved && saved.isAuthenticated && saved.lastLogin) {
+            const loginTime = new Date(saved.lastLogin).getTime();
+            const now = Date.now();
+            const sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
+            if (now - loginTime > sessionTimeout) {
+              return { isAuthenticated: false, lastLogin: null };
+            }
+          }
+          return saved || { isAuthenticated: false, lastLogin: null };
+        });
+
+        const adminEnabled = useMemo(() => {
+          const params = new URLSearchParams(window.location.search);
+          return params.get("admin") === "1";
+        }, []);
+
+        const [adminOpen, setAdminOpen] = useState(false);
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+        const [content, setContent] = useState(() => {
+          const saved = safeParse(window.localStorage.getItem(LS_KEY) || "");
+          return normalizeContent(saved);
+        });
+
+        useEffect(() => { window.localStorage.setItem(LS_KEY, JSON.stringify(content)); }, [content]);
+
+        useEffect(() => { 
+          localStorage.setItem(ADMIN_KEY, JSON.stringify(adminAuth)); 
+        }, [adminAuth]);
+
+        // Initialize GSAP and ScrollTrigger
+        useEffect(() => {
+          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+            
+            // Scroll Progress Bar
+            const progressBar = document.createElement('div');
+            progressBar.className = 'scroll-progress';
+            document.body.appendChild(progressBar);
+            
+            gsap.to(progressBar, {
+              scaleX: 1,
+              ease: 'none',
+              scrollTrigger: {
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.3
+              }
+            });
+            
+            // Parallax floating shapes
+            gsap.utils.toArray('.shape-blob').forEach((blob, i) => {
+              gsap.to(blob, {
+                y: i % 2 === 0 ? -100 : 100,
+                rotation: 360,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: blob,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1
+                }
+              });
+            });
+            
+            // Card 3D entrance animations
+            gsap.utils.toArray('.card-3d').forEach((card, i) => {
+              gsap.from(card, {
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 85%',
+                  toggleActions: 'play none none reverse'
+                },
+                y: 100,
+                opacity: 0,
+                rotationX: -15,
+                duration: 1,
+                delay: i * 0.1,
+                ease: 'power3.out'
+              });
+            });
+            
+            // Stagger text animations
+            gsap.utils.toArray('.stagger-children').forEach(container => {
+              gsap.from(container.children, {
+                scrollTrigger: {
+                  trigger: container,
+                  start: 'top 80%',
+                  toggleActions: 'play none none reverse'
+                },
+                y: 30,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: 'power2.out'
+              });
+            });
+            
+            // Number counter animation
+            gsap.utils.toArray('.stat-number').forEach(stat => {
+              const endValue = stat.textContent;
+              const numericValue = parseInt(endValue.replace(/\D/g, '')) || 0;
+              
+              gsap.from(stat, {
+                scrollTrigger: {
+                  trigger: stat,
+                  start: 'top 90%',
+                  toggleActions: 'play none none none'
+                },
+                textContent: 0,
+                duration: 2,
+                ease: 'power1.out',
+                snap: { textContent: 1 },
+                onUpdate: function() {
+                  const current = Math.ceil(this.targets()[0].textContent);
+                  if (endValue.includes('+')) {
+                    stat.textContent = current + '+';
+                  } else if (endValue.includes('%')) {
+                    stat.textContent = current + '%';
+                  } else {
+                    stat.textContent = current;
+                  }
+                }
+              });
+            });
+            
+            // Smooth scroll for navigation links
+            gsap.utils.toArray('a[href^="#"]').forEach(anchor => {
+              anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                  e.preventDefault();
+                  const target = document.querySelector(href);
+                  const offsetY = window.innerWidth < 768 ? 100 : 80;
+                  gsap.to(window, {
+                    duration: 1,
+                    scrollTo: { y: target, offsetY: offsetY },
+                    ease: 'power2.inOut'
+                  });
+                }
+              });
+            });
+            
+            // Hero text reveal
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+              const words = heroTitle.textContent.split(' ');
+              heroTitle.innerHTML = words.map(word => `<span class="inline-block reveal-word">${word}</span>`).join(' ');
+              
+              gsap.to('.reveal-word', {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                y: 0,
+                opacity: 1,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: 'power2.out',
+                delay: 0.2
+              });
+            }
+            
+            // Magnetic button effect
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+              btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(btn, {
+                  x: x * 0.3,
+                  y: y * 0.3,
+                  duration: 0.3,
+                  ease: 'power2.out'
+                });
+              });
+              
+              btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                  x: 0,
+                  y: 0,
+                  duration: 0.5,
+                  ease: 'elastic.out(1, 0.3)'
+                });
+              });
+            });
+            
+            // Create floating particles
+            const createParticles = (container) => {
+              if (!container) return;
+              const particlesDiv = document.createElement('div');
+              particlesDiv.className = 'particles';
+              container.appendChild(particlesDiv);
+              
+              for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                  position: absolute;
+                  width: ${Math.random() * 4 + 2}px;
+                  height: ${Math.random() * 4 + 2}px;
+                  background: rgba(13, 148, 136, ${Math.random() * 0.5 + 0.2});
+                  border-radius: 50%;
+                  left: ${Math.random() * 100}%;
+                  top: ${Math.random() * 100}%;
+                `;
+                particlesDiv.appendChild(particle);
+                
+                gsap.to(particle, {
+                  y: `random(-100, 100)`,
+                  x: `random(-100, 100)`,
+                  opacity: 0,
+                  duration: `random(2, 4)`,
+                  repeat: -1,
+                  ease: 'none'
+                });
+              }
+            };
+            
+            const heroSection = document.querySelector('.hero-section');
+            if (heroSection) createParticles(heroSection);
+          }
+        }, []);
+
+        // Scroll reveal effect
+        useEffect(() => {
+          const handleScroll = () => {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            reveals.forEach(element => {
+              const elementTop = element.getBoundingClientRect().top;
+              const elementVisible = 150;
+              if (elementTop < window.innerHeight - elementVisible) {
+                element.classList.add('revealed');
+              }
+            });
+          };
+
+          window.addEventListener('scroll', handleScroll);
+          handleScroll(); // Initial check
+          
+          return () => window.removeEventListener('scroll', handleScroll);
+        }, []);
+
+        useEffect(() => {
+          const requiredIds = ["platform", "products", "pricing", "about", "contact"];
+          requiredIds.forEach((id) => {
+            const el = document.getElementById(id);
+            console.assert(!!el, `[HUREHomepage] Missing section with id="#${id}"`);
+          });
+          console.assert(["core", "care"].includes(pricingView), `[HUREHomepage] Invalid pricingView: ${pricingView}`);
+          const keys = content.ecosystem.cards.map((c) => c.key);
+          console.assert(new Set(keys).size === keys.length, "[HUREHomepage] ecosystem.cards contains duplicate keys");
+        }, [pricingView, content]);
+
+        // Apply dark mode to theme
+        const theme = darkMode ? {
+          ...content.theme,
+          pageBg: content.theme.darkPageBg,
+          surfaceBg: content.theme.darkSurfaceBg,
+          cardBg: content.theme.darkCardBg,
+          text: content.theme.darkText,
+          muted: content.theme.darkMuted,
+          border: content.theme.darkBorder,
+          footerBg: content.theme.darkFooterBg,
+        } : content.theme;
+        
+        const toggleData = content.pricing.toggles[pricingView];
+
+        // Save dark mode preference
+        useEffect(() => {
+          localStorage.setItem('hure_dark_mode', JSON.stringify(darkMode));
+          document.body.style.backgroundColor = theme.pageBg;
+        }, [darkMode, theme.pageBg]);
+
+        const styles = {
+          page: { backgroundColor: theme.pageBg, color: theme.text },
+          surface: { backgroundColor: theme.surfaceBg, borderColor: theme.border },
+          primaryBtn: (active) => ({
+            backgroundColor: active ? theme.primary : 'transparent',
+            color: active ? "#fff" : theme.text,
+            borderColor: active ? theme.primary : 'transparent',
+          }),
+        };
+
+        return (
+          <div className="min-h-screen" style={styles.page}>
+            {/* NAV */}
+            <header className="sticky top-0 z-40 border-b sticky-nav glass-effect" style={{ 
+              backgroundColor: `${theme.surfaceBg}f0`,
+              borderColor: theme.border 
+            }}>
+              <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: theme.primary }}>
+                    <span className="text-white font-bold text-xl">H</span>
+                  </div>
+                  <div className="text-2xl font-bold tracking-tight" style={{ color: theme.primary }}>
+                    {content.brand.name}
+                  </div>
+                </div>
+
+                <nav className="hidden md:flex gap-8 text-sm font-semibold">
+                  {content.nav.links.map((l, i) => (
+                    <a key={i} href={l.href} className="hover:opacity-80 transition-all relative group" style={{ color: theme.text }}>
+                      {l.label}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300" 
+                            style={{ backgroundColor: theme.primary }} />
+                    </a>
+                  ))}
+                </nav>
+
+                <div className="flex items-center gap-3">
+                  {/* Dark Mode Toggle */}
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className="theme-toggle p-2.5 rounded-xl transition-all hover:scale-110 relative z-10"
+                    style={{ 
+                      backgroundColor: darkMode ? theme.primary : 'transparent',
+                      border: `2px solid ${theme.border}`,
+                      color: darkMode ? '#fff' : theme.text
+                    }}
+                    title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  >
+                    {darkMode ? (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                      </svg>
+                    )}
+                  </button>
+                  
+                  <a className="hidden md:flex px-5 py-2.5 border-2 rounded-xl font-semibold text-sm transition-all hover:bg-opacity-10" 
+                     style={{ borderColor: theme.border, color: theme.text, backgroundColor: 'transparent' }} 
+                     href={content.nav.ctas.left.href}>
+                    {content.nav.ctas.left.label}
+                  </a>
+                  <a className="hidden md:flex btn-modern px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg" 
+                     style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                     href={content.nav.ctas.right.href}>
+                    {content.nav.ctas.right.label}
+                  </a>
+
+                  {/* Mobile Menu Toggle */}
+                  <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="md:hidden p-2.5 rounded-xl transition-all"
+                    style={{ 
+                      backgroundColor: mobileMenuOpen ? theme.primary : 'transparent',
+                      border: `2px solid ${theme.border}`,
+                      color: mobileMenuOpen ? '#fff' : theme.text
+                    }}
+                    title="Toggle menu"
+                  >
+                    {mobileMenuOpen ? (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Mobile Menu */}
+              {mobileMenuOpen && (
+                <div className="md:hidden border-t" style={{ backgroundColor: theme.surfaceBg, borderColor: theme.border }}>
+                  <nav className="px-6 py-4 space-y-3">
+                    {content.nav.links.map((l, i) => (
+                      <a 
+                        key={i} 
+                        href={l.href} 
+                        className="block py-2.5 font-semibold text-sm transition-all"
+                        style={{ color: theme.text }}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {l.label}
+                      </a>
+                    ))}
+                    <div className="pt-3 border-t space-y-2" style={{ borderColor: theme.border }}>
+                      <a 
+                        className="block w-full px-5 py-2.5 border-2 rounded-xl font-semibold text-sm text-center transition-all" 
+                        style={{ borderColor: theme.border, color: theme.text, backgroundColor: 'transparent' }} 
+                        href={content.nav.ctas.left.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {content.nav.ctas.left.label}
+                      </a>
+                      <a 
+                        className="block w-full btn-modern px-5 py-2.5 rounded-xl font-semibold text-sm text-center shadow-lg" 
+                        style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                        href={content.nav.ctas.right.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {content.nav.ctas.right.label}
+                      </a>
+                    </div>
+                  </nav>
+                </div>
+              )}
+            </header>
+
+            {/* HERO */}
+            <section className="hero-section max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center relative overflow-hidden parallax-container">
+              {/* Decorative floating shapes */}
+              <div className="shape-blob morphing-blob" style={{ 
+                width: '400px', 
+                height: '400px', 
+                backgroundColor: `${theme.primary}20`, 
+                top: '-100px', 
+                right: '-100px',
+                animationDelay: '0s',
+                animationDuration: '8s'
+              }} />
+              <div className="shape-blob morphing-blob" style={{ 
+                width: '300px', 
+                height: '300px', 
+                backgroundColor: `${theme.primary}20`, 
+                bottom: '-50px', 
+                left: '-50px',
+                animationDelay: '2s',
+                animationDuration: '10s'
+              }} />
+              
+              <div className="animate-fadeInUp delay-100 relative z-10">
+                <div className="inline-block px-4 py-2 rounded-full mb-4 glow-effect animate-bounceIn" style={{ 
+                  backgroundColor: `${theme.primary}20`,
+                  color: theme.primary,
+                  fontSize: '14px',
+                  fontWeight: '600'
+                }}>
+                  🏥 Healthcare Technology Platform
+                </div>
+                <h1 className="hero-title text-5xl md:text-6xl font-bold leading-tight tracking-tight animate-zoomIn" style={{ color: theme.text }}>
+                  {content.hero.headlinePrefix}{" "}
+                  <span className="relative inline-block animated-gradient-text animate-pulse">
+                    {content.hero.headlineAccent}
+                  </span>
+                </h1>
+                <p className="mt-8 text-xl leading-relaxed animate-fadeIn" style={{ color: theme.muted }}>
+                  {content.hero.body}
+                </p>
+                <p className="mt-4 text-sm animate-fadeIn" style={{ color: theme.muted }}>
+                  <span className="font-semibold" style={{ color: theme.primary }}>{content.brand.name}</span> stands for <em>{content.brand.acronym}</em>.
+                </p>
+                <div className="mt-10 flex gap-4 flex-wrap animate-fadeInUp">
+                  <a className="btn-modern magnetic-btn px-8 py-4 rounded-xl font-semibold text-base shadow-lg relative z-10 hover-scale shadow-glow" 
+                     style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                     href={content.hero.primaryCta.href}>
+                    {content.hero.primaryCta.label}
+                    <span className="ml-2">→</span>
+                  </a>
+                  <a className="btn-modern magnetic-btn px-8 py-4 border-2 rounded-xl font-semibold text-base relative z-10 hover-rotate" 
+                     style={{ borderColor: theme.primary, color: theme.primary, backgroundColor: 'transparent' }} 
+                     href={content.hero.secondaryCta.href}>
+                    {content.hero.secondaryCta.label}
+                  </a>
+                </div>
+              </div>
+
+              <div className="animate-fadeInUp delay-300 relative z-10 perspective-container">
+                <div className="card-3d tilt-card rounded-3xl shadow-2xl p-8 relative glow-effect animate-rotateIn" style={{ ...styles.surface, border: `1px solid ${theme.border}` }}>
+                  <div className="absolute top-0 right-0 w-32 h-32 rounded-full animate-pulse" 
+                       style={{ backgroundColor: `${theme.primary}10`, transform: 'translate(30%, -30%)' }} />
+                  
+                  <p className="text-sm font-semibold uppercase tracking-wider animate-fadeIn" style={{ color: theme.primary }}>
+                    {content.hero.trustTitle}
+                  </p>
+                  <ul className="mt-6 space-y-4 animate-fadeInUp">
+                    {content.hero.trustBullets.map((t, i) => (
+                      <li key={i} className="flex items-start gap-3 hover-scale" style={{ animationDelay: `${i * 0.1}s` }}>
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-1 animate-bounceIn" 
+                             style={{ backgroundColor: theme.primary, animationDelay: `${i * 0.2}s` }}>
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span className="text-base leading-relaxed" style={{ color: theme.text }}>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  {/* Stats */}
+                  {/* Stats removed as requested */}
+                </div>
+              </div>
+            </section>
+
+            {/* ECOSYSTEM */}
+            <section id="platform" className="py-24 relative overflow-hidden" style={{ backgroundColor: theme.surfaceBg }}>
+              {/* Background Pattern */}
+              <div className="absolute inset-0" style={{ 
+                backgroundImage: `radial-gradient(circle, ${theme.primary} 1px, transparent 1px)`,
+                backgroundSize: '30px 30px',
+                opacity: darkMode ? 0.03 : 0.05
+              }} />
+              
+              {/* Floating decorative elements */}
+              <div className="absolute top-20 left-10 w-20 h-20 rounded-full morphing-blob" 
+                   style={{ backgroundColor: `${theme.primary}15`, animationDuration: '15s' }} />
+              <div className="absolute bottom-20 right-10 w-32 h-32 rounded-full morphing-blob" 
+                   style={{ backgroundColor: `${theme.primary}15`, animationDuration: '18s', animationDelay: '3s' }} />
+              
+              <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="text-center mb-16 animate-fadeInUp">
+                  <div className="inline-block px-4 py-2 rounded-full mb-4 glow-effect animate-bounceIn" style={{ 
+                    backgroundColor: `${theme.primary}20`,
+                    color: theme.primary,
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                    💼 Complete Healthcare Suite
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text animate-zoomIn" style={{ color: theme.text }}>
+                    {content.ecosystem.title}
+                  </h2>
+                  <p className="text-xl max-w-2xl mx-auto animate-fadeIn" style={{ color: theme.muted }}>
+                    {content.ecosystem.subtitle}
+                  </p>
+                </div>
+
+                {/* Anchor for navbar */}
+                <div id="products" className="sr-only" aria-hidden="true">Products</div>
+
+                <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8 perspective-container">
+                  {content.ecosystem.cards.map((c, idx) => (
+                    <div key={c.key}>
+                      <ProductCard
+                        theme={theme}
+                        title={c.title}
+                        subtitle={c.subtitle}
+                        bullets={c.bullets}
+                        ctaLabel={c.cta.label}
+                        ctaHref={c.cta.href}
+                        badge={c.badge}
+                        disabled={c.disabled}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* ABOUT */}
+            <section id="about" className="max-w-7xl mx-auto px-6 py-24 relative overflow-hidden">
+              {/* Animated background elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full morphing-blob" 
+                   style={{ backgroundColor: `${theme.primary}08`, animationDuration: '20s' }} />
+              
+              <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
+                <div className="animate-fadeInUp">
+                  <div className="inline-block px-4 py-2 rounded-full mb-6 glow-effect animate-bounceIn" style={{ 
+                    backgroundColor: `${theme.primary}20`,
+                    color: theme.primary,
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                    🌍 About Us
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight gradient-text animate-zoomIn" style={{ color: theme.text }}>
+                    {content.about.title}
+                  </h2>
+                  <div className="animate-fadeIn">
+                    <p className="text-lg leading-relaxed mb-4" style={{ color: theme.muted }}>{content.about.p1}</p>
+                    <p className="text-lg leading-relaxed mb-8" style={{ color: theme.muted }}>{content.about.p2}</p>
+                  </div>
+                  <div className="flex gap-4 flex-wrap animate-fadeInUp">
+                    <a className="btn-modern magnetic-btn px-8 py-4 rounded-xl font-semibold shadow-lg hover-scale shadow-glow" 
+                       style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                       href={content.about.primaryCta.href}>
+                      {content.about.primaryCta.label}
+                      <span className="ml-2">→</span>
+                    </a>
+                    <a className="btn-modern magnetic-btn px-8 py-4 border-2 rounded-xl font-semibold hover-rotate" 
+                       style={{ borderColor: theme.primary, color: theme.primary, backgroundColor: 'transparent' }} 
+                       href={content.about.secondaryCta.href}>
+                      {content.about.secondaryCta.label}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="perspective-container">
+                  <div className="card-3d tilt-card rounded-3xl shadow-2xl p-10 relative glow-effect" style={{ 
+                    ...styles.surface, 
+                    border: `2px solid ${theme.border}` 
+                  }}>
+                    <div className="absolute -top-6 -right-6 w-24 h-24 rounded-3xl rotate-12 animate-pulse" 
+                         style={{ backgroundColor: `${theme.primary}15` }} />
+                    
+                    <p className="text-sm font-bold uppercase tracking-wider mb-6" style={{ color: theme.primary }}>
+                      What makes {content.brand.name} different
+                    </p>
+                    <ul className="space-y-4">
+                      {content.about.bullets.map((b, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-1 glow-effect" 
+                               style={{ backgroundColor: theme.primary }}>
+                            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                          <span className="text-base leading-relaxed" style={{ color: theme.text }}>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* HOW IT CONNECTS */}
+            <section className="py-24 max-w-7xl mx-auto px-6">
+              <div className="text-center mb-16 animate-fadeInUp">
+                <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ 
+                  backgroundColor: `${theme.primary}20`,
+                  color: theme.primary,
+                  fontSize: '14px',
+                  fontWeight: '600'
+                }}>
+                  🔗 Seamless Integration
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold" style={{ color: theme.text }}>
+                  {content.how.title}
+                </h2>
+              </div>
+              <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {content.how.steps.map((s, i) => (
+                  <div key={i} className="animate-scaleIn" style={{ animationDelay: `${i * 0.15}s` }}>
+                    <FlowStep theme={theme} title={s.title} desc={s.desc} />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* PRICING */}
+            <section id="pricing" className="py-24 relative overflow-hidden" style={{ backgroundColor: theme.surfaceBg }}>
+              {/* Background Pattern */}
+              <div className="absolute inset-0" style={{ 
+                backgroundImage: `radial-gradient(circle, ${theme.primary} 1px, transparent 1px)`,
+                backgroundSize: '30px 30px',
+                opacity: darkMode ? 0.03 : 0.05
+              }} />
+              
+              <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="text-center mb-12 animate-fadeInUp">
+                  <div className="inline-block px-4 py-2 rounded-full mb-4" style={{ 
+                    backgroundColor: `${theme.primary}20`,
+                    color: theme.primary,
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                    💰 Flexible Pricing
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.text }}>
+                    {content.pricing.title}
+                  </h2>
+                  <p className="text-xl max-w-3xl mx-auto" style={{ color: theme.muted }}>
+                    {content.pricing.subtitle}
+                  </p>
+                </div>
+
+                {/* CORE vs CARE TOGGLE */}
+                <div className="mt-10 flex items-center justify-center">
+                  <div className="inline-flex rounded-2xl border-2 p-1.5 shadow-xl" style={{ backgroundColor: theme.surfaceBg, borderColor: theme.border }}>
+                    <button
+                      onClick={() => setPricingView("core")}
+                      className="px-8 py-3 text-base rounded-xl font-semibold transition-all border-0"
+                      style={styles.primaryBtn(pricingView === "core")}
+                      aria-pressed={pricingView === "core"}
+                    >
+                      {content.pricing.toggles.core.label}
+                    </button>
+                    <button
+                      onClick={() => setPricingView("care")}
+                      className="px-8 py-3 text-base rounded-xl font-semibold transition-all border-0"
+                      style={styles.primaryBtn(pricingView === "care")}
+                      aria-pressed={pricingView === "care"}
+                    >
+                      {content.pricing.toggles.care.label}
+                    </button>
+                  </div>
+                </div>
+
+                {/* SUBSCRIPTION PRICING */}
+                <div className="mt-16">
+                  <div className="text-center mb-10">
+                    <h3 className="text-3xl font-bold" style={{ color: theme.text }}>
+                      {toggleData.productName}
+                    </h3>
+                    <p className="mt-2 text-lg" style={{ color: theme.muted }}>{toggleData.productDesc}</p>
+                  </div>
+
+                  <div className="mt-8 grid md:grid-cols-3 gap-8">
+                    {toggleData.tiers.map((t, idx) => (
+                      <div key={idx} className="animate-scaleIn" style={{ animationDelay: `${idx * 0.15}s` }}>
+                        <PriceCard theme={theme} title={t.title} price={t.price} desc={t.desc} meta={t.meta} highlight={t.highlight} />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-12 text-center">
+                    <p className="text-base font-medium mb-6" style={{ color: theme.muted }}>{content.pricing.bundleNote}</p>
+                    <div className="flex items-center justify-center gap-4">
+                      <a className="btn-modern px-8 py-4 rounded-xl font-semibold shadow-lg" 
+                         style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                         href="#contact">
+                        Request Demo
+                        <span className="ml-2">→</span>
+                      </a>
+                      <a className="btn-modern px-8 py-4 border-2 rounded-xl font-semibold" 
+                         style={{ borderColor: theme.primary, color: theme.primary, backgroundColor: 'transparent' }} 
+                         href="#contact">
+                        Talk to Sales
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* MARKETPLACE PRICING */}
+                <div className="mt-24">
+                  <div className="text-center mb-12">
+                    <h3 className="text-3xl font-bold mb-2" style={{ color: theme.text }}>Marketplace Solutions</h3>
+                    <p className="text-lg" style={{ color: theme.muted }}>Pay-as-you-go, no monthly fees</p>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="animate-slideInLeft delay-200">
+                      <MarketplaceCard theme={theme} data={content.pricing.marketplace.carestint} live />
+                    </div>
+                    <div className="animate-slideInRight delay-300">
+                      <MarketplaceCard theme={theme} data={content.pricing.marketplace.clinexo} comingSoon />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* CTA */}
+            <section id="contact" className="py-24 max-w-7xl mx-auto px-6 relative overflow-hidden parallax-container">
+              {/* Decorative Elements */}
+              <div className="shape-blob morphing-blob" style={{ 
+                width: '350px', 
+                height: '350px', 
+                backgroundColor: theme.primary, 
+                top: '-100px', 
+                left: '-100px',
+                animationDelay: '1s',
+                animationDuration: '9s'
+              }} />
+              <div className="shape-blob morphing-blob" style={{ 
+                width: '280px', 
+                height: '280px', 
+                backgroundColor: theme.primary, 
+                bottom: '-80px', 
+                right: '-80px',
+                animationDelay: '4s',
+                animationDuration: '12s'
+              }} />
+              
+              <div className="card-3d rounded-3xl shadow-2xl p-16 text-center relative z-10 glow-effect" 
+                   style={{ backgroundColor: theme.surfaceBg, border: `2px solid ${theme.border}` }}>
+                <div className="max-w-3xl mx-auto">
+                  <div className="inline-block px-4 py-2 rounded-full mb-6" style={{ 
+                    backgroundColor: `${theme.primary}20`,
+                    color: theme.primary,
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                    🚀 Get Started Today
+                  </div>
+                  
+                  <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight" style={{ color: theme.text }}>
+                    {content.cta.title}
+                  </h2>
+                  <p className="text-xl mb-10" style={{ color: theme.muted }}>{content.cta.subtitle}</p>
+                  
+                  <a className="btn-modern magnetic-btn inline-flex px-10 py-5 rounded-xl text-lg font-semibold shadow-2xl glow-effect" 
+                     style={{ backgroundColor: theme.primary, color: "#fff" }} 
+                     href={content.cta.button.href}>
+                    {content.cta.button.label}
+                    <span className="ml-2">→</span>
+                  </a>
+                  
+                  {/* Trust Indicators */}
+                  {/* Trust Indicators removed as requested */}
+                                  {/* Office Hours and Consultation Info */}
+                                  <div className="mt-12 pt-8 border-t text-center" style={{ borderColor: theme.border }}>
+                                    <div className="text-2xl font-bold stat-number" style={{ color: theme.primary }}>Office Hours 8a.m. to 4.30 p.m. EAT</div>
+                                    <div className="text-base mt-2" style={{ color: theme.muted }}>Please submit your request by 4.30pm EAT</div>
+                                    <div className="text-base mt-4" style={{ color: theme.text }}>
+                                      Book a free consultation with our team at <a href="tel:0798190759" style={{ color: theme.primary, textDecoration: 'underline' }}>0798190759</a>.
+                                    </div>
+                                    <ConsultationForm />
+                                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* FOOTER */}
+            <footer className="text-white py-16 relative overflow-hidden" style={{ backgroundColor: theme.footerBg }}>
+              {/* Decorative Pattern */}
+              <div className="absolute inset-0 opacity-10" style={{ 
+                backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
+                backgroundSize: '30px 30px'
+              }} />
+              
+              <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="grid md:grid-cols-4 gap-12 text-sm mb-12">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                        <span className="text-white font-bold text-xl">H</span>
+                      </div>
+                      <div className="font-bold text-2xl">{content.brand.name}</div>
+                    </div>
+                    <p className="opacity-90 leading-relaxed">{content.brand.acronym}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="font-bold text-base mb-4">Products</p>
+                    <ul className="space-y-3 opacity-90">
+                      {content.ecosystem.cards.map((c) => (
+                        <li key={c.key} className="hover:opacity-100 transition-opacity cursor-pointer">
+                          {c.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <p className="font-bold text-base mb-4">Company</p>
+                    <ul className="space-y-3 opacity-90">
+                      {content.footer.companyLinks.map((l, i) => (
+                        <li key={i}>
+                          <a href={l.href} className="hover:opacity-100 transition-opacity">
+                            {l.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <p className="font-bold text-base mb-4">Contact</p>
+                    <div className="space-y-3 opacity-90">
+                      <p className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        {content.brand.email}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {content.brand.location}
+                      </p>
+                      
+                      <div className="flex items-center gap-3 pt-4">
+                        <a
+                          href={content.brand.instagramUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label="HURE on Instagram"
+                          className="icon-bounce inline-flex items-center justify-center w-10 h-10 rounded-xl transition-all"
+                          style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                        >
+                          <InstagramIcon />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setAdminOpen(true)}
+                          className="icon-bounce text-xs px-4 py-2 rounded-xl transition-all font-semibold"
+                          style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+                          title={adminAuth.isAuthenticated ? "Open admin editor" : "Admin login required"}
+                        >
+                          {adminAuth.isAuthenticated ? "Admin Panel" : "Admin"}
+                        </button>
+                        {adminAuth.isAuthenticated && (
+                          <button
+                            type="button"
+                            onClick={() => setAdminAuth({ isAuthenticated: false, lastLogin: null })}
+                            className="icon-bounce text-xs px-4 py-2 rounded-xl transition-all font-semibold"
+                            style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+                            title="Logout"
+                          >
+                            Logout
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pt-8 border-t text-center text-sm opacity-75" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
+                  <p>© {new Date().getFullYear()} {content.brand.name}. All rights reserved.</p>
+                </div>
+              </div>
+            </footer>
+
+            {/* DEMO BACKEND (ADMIN EDITOR) */}
+            {(adminEnabled || adminOpen) && (
+              <AdminAuthWrapper
+                adminAuth={adminAuth}
+                setAdminAuth={setAdminAuth}
+                children={
+                  <AdminEditor
+                    open={adminOpen || adminEnabled}
+                    onClose={() => setAdminOpen(false)}
+                    content={content}
+                    setContent={setContent}
+                  />
+                }
+              />
+            )}
+          </div>
+        );
+      }
+
+      function ProductCard({ theme, title, subtitle, bullets, ctaLabel, ctaHref, disabled, badge }) {
+        const cardRef = React.useRef(null);
+        
+        // Add mouse move tilt effect
+        const handleMouseMove = (e) => {
+          if (!cardRef.current || disabled) return;
+          const card = cardRef.current;
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = (y - centerY) / 10;
+          const rotateY = (centerX - x) / 10;
+          
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+        };
+        
+        const handleMouseLeave = () => {
+          if (!cardRef.current) return;
+          cardRef.current.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+        };
+        
+        return (
+          <div 
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className={`card-3d tilt-card rounded-3xl p-8 shadow-xl relative overflow-hidden ${disabled ? "opacity-70" : ""}`} 
+            style={{ 
+              backgroundColor: theme.cardBg, 
+              border: `2px solid ${theme.border}`,
+              transition: 'transform 0.1s ease-out'
+            }}>
+            {/* Gradient Overlay on Hover */}
+            <div className="absolute inset-0 opacity-0 hover:opacity-5 transition-opacity duration-500 pointer-events-none" 
+                 style={{ backgroundColor: theme.primary }} />
+            
+            {/* Animated Icon Circle */}
+<div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 icon-bounce relative z-10 glow-effect animate-rotateIn" 
+                 style={{ backgroundColor: `${theme.primary}15` }}>
+              <svg className="w-8 h-8 animate-pulse" style={{ color: theme.primary }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            
+            {!!badge && (
+              <span className="absolute top-6 right-6 text-xs font-bold text-white px-3 py-1.5 rounded-full shadow-lg animate-pulse glow-effect" 
+                    style={{ backgroundColor: theme.primary }}>
+                {badge}
+              </span>
+            )}
+            
+            <h3 className="text-2xl font-bold mb-2 relative z-10" style={{ color: theme.text }}>{title}</h3>
+            <p className="text-sm font-medium mb-6 relative z-10" style={{ color: theme.primary }}>{subtitle}</p>
+            
+            <ul className="space-y-3 mb-8 relative z-10">
+              {bullets.map((b, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm">
+                  <svg className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: theme.primary }} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span style={{ color: theme.text }}>{b}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <a
+              href={ctaHref}
+              className={`btn-modern magnetic-btn mt-auto w-full inline-flex items-center justify-center py-3.5 rounded-xl font-semibold text-sm transition-all relative z-10 ${disabled ? "pointer-events-none" : ""}`}
+              style={{ 
+                backgroundColor: disabled ? "#94A3B8" : theme.primary, 
+                color: "#fff",
+                boxShadow: disabled ? 'none' : '0 4px 15px rgba(13, 148, 136, 0.2)'
+              }}
+            >
+              {ctaLabel}
+              {!disabled && <span className="ml-2">→</span>}
+            </a>
+          </div>
+        );
+      }
+
+      function FlowStep({ theme, title, desc }) {
+        return (
+          <div className="card-3d p-8 rounded-3xl shadow-xl text-center group relative overflow-hidden" 
+               style={{ backgroundColor: theme.cardBg, border: `2px solid ${theme.border}` }}>
+            {/* Hover Background */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+                 style={{ backgroundColor: `${theme.primary}05` }} />
+            
+            {/* Step Number Circle */}
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" 
+                 style={{ backgroundColor: `${theme.primary}20` }}>
+              <svg className="w-8 h-8" style={{ color: theme.primary }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                      d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            
+            <h4 className="font-bold text-xl mb-3 relative z-10" style={{ color: theme.text }}>{title}</h4>
+            <p className="text-sm leading-relaxed relative z-10" style={{ color: theme.muted }}>{desc}</p>
+          </div>
+        );
+      }
+
+      function PriceCard({ theme, title, price, desc, meta = [], highlight }) {
+        return (
+          <div
+            className={`card-3d rounded-3xl p-8 shadow-xl border-2 relative overflow-hidden ${highlight ? 'price-card-highlight' : ''}`}
+            style={{
+              backgroundColor: highlight ? `${theme.primary}08` : theme.cardBg,
+              borderColor: highlight ? theme.primary : theme.border,
+            }}
+          >
+            {/* Best Value Badge */}
+            {highlight && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="px-4 py-1.5 rounded-full text-xs font-bold text-white shadow-lg animate-pulse" 
+                     style={{ backgroundColor: theme.primary }}>
+                  ⭐ MOST POPULAR
+                </div>
+              </div>
+            )}
+            
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold mb-2" style={{ color: theme.text }}>{title}</h3>
+              <div className="mt-4">
+                <span className="text-4xl font-bold" style={{ color: theme.primary }}>{price}</span>
+                <span className="text-base font-normal ml-2" style={{ color: theme.muted }}>/ month</span>
+              </div>
+              <p className="mt-4 text-sm" style={{ color: theme.muted }}>{desc}</p>
+            </div>
+
+            {meta?.length > 0 && (
+              <ul className="space-y-3 mb-8">
+                {meta.map((m, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm">
+                    <svg className="w-5 h-5 flex-shrink-0" style={{ color: theme.primary }} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span style={{ color: theme.text }}>{m}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <button className="btn-modern w-full py-4 rounded-xl font-semibold shadow-lg" 
+                    style={{ 
+                      backgroundColor: highlight ? theme.primary : 'transparent', 
+                      color: highlight ? "#fff" : theme.primary,
+                      border: highlight ? 'none' : `2px solid ${theme.primary}`
+                    }}>
+              Get Started
+              <span className="ml-2">→</span>
+            </button>
+          </div>
+        );
+      }
+
+      function MarketplaceCard({ theme, data, live, comingSoon }) {
+        return (
+          <div className={`card-3d rounded-3xl p-8 shadow-xl ${comingSoon ? "opacity-80" : ""}`} 
+               style={{ backgroundColor: theme.cardBg, border: `2px solid ${theme.border}` }}>
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-2" style={{ color: theme.text }}>{data.title}</h3>
+                <p className="text-sm font-medium" style={{ color: theme.primary }}>{data.subtitle}</p>
+              </div>
+              <span className="text-xs font-bold px-3 py-1.5 rounded-full text-white shadow-lg" 
+                    style={{ backgroundColor: live ? theme.primary : "#64748B" }}>
+                {data.badge}
+              </span>
+            </div>
+            
+            <p className="text-base leading-relaxed mb-6" style={{ color: theme.muted }}>{data.body}</p>
+            
+            <ul className="space-y-3 mb-8">
+              {data.bullets.map((b, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm">
+                  <svg className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: theme.primary }} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span style={{ color: theme.text }}>{b}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <a
+              href={data.cta.href}
+              className={`btn-modern w-full inline-flex items-center justify-center py-4 rounded-xl font-semibold transition-all shadow-lg ${comingSoon ? "pointer-events-none" : ""}`}
+              style={{ 
+                backgroundColor: comingSoon ? "#94A3B8" : theme.primary, 
+                color: "#fff" 
+              }}
+            >
+              {data.cta.label}
+              {!comingSoon && <span className="ml-2">→</span>}
+            </a>
+          </div>
+        );
+      }
+
+      function InstagramIcon() {
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
+            <rect x="3" y="3" width="18" height="18" rx="5" ry="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
+          </svg>
+        );
+      }
+
+      function AdminAuthWrapper({ adminAuth, setAdminAuth, children }) {
+        const [username, setUsername] = useState("");
+        const [password, setPassword] = useState("");
+        const [error, setError] = useState("");
+
+        const handleLogin = (e) => {
+          e.preventDefault();
+          setError("");
+          
+          if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            const newAuth = {
+              isAuthenticated: true,
+              lastLogin: new Date().toISOString(),
+              username: ADMIN_CREDENTIALS.username,
+              role: ADMIN_CREDENTIALS.role
+            };
+            setAdminAuth(newAuth);
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            successMsg.textContent = 'Login successful! Welcome to the admin panel.';
+            document.body.appendChild(successMsg);
+            setTimeout(() => {
+              successMsg.remove();
+            }, 3000);
+          } else {
+            setError("Invalid credentials. Try: superadmin / hure2025");
+          }
+        };
+
+        const handleLogout = () => {
+          setAdminAuth({ isAuthenticated: false, lastLogin: null });
+        };
+
+        // If authenticated, show the admin editor
+        if (adminAuth.isAuthenticated) {
+          return React.cloneElement(children, {
+            ...children.props,
+            adminAuth,
+            onLogout: handleLogout
+          });
+        }
+
+        // If not authenticated, show login form
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-2xl p-8 w-full max-w-md mx-4 shadow-2xl">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-teal-100 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">Admin Access Required</h2>
+                <p className="text-gray-600 mt-2">Superadmin authentication required</p>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    placeholder="superadmin"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    placeholder="Enter password"
+                    required
+                  />
+                </div>
+                
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {error}
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 transition-colors font-semibold"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.location.href = window.location.pathname}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+
+              <div className="mt-6 text-center text-sm text-gray-500">
+                <p>For demo purposes:</p>
+                <p className="font-mono bg-gray-100 px-2 py-1 rounded inline-block mt-1">superadmin / hure2025</p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function AdminEditor({ open, onClose, content, setContent, adminAuth, onLogout }) {
+        const [tab, setTab] = useState("hero");
+        const [raw, setRaw] = useState(JSON.stringify(content, null, 2));
+
+        useEffect(() => setRaw(JSON.stringify(content, null, 2)), [content]);
+
+        useEffect(() => {
+          function onKey(e) { if (e.key === "Escape") onClose?.(); }
+          window.addEventListener("keydown", onKey);
+          return () => window.removeEventListener("keydown", onKey);
+        }, [onClose]);
+
+        const tabs = [
+          { key: "dashboard", label: "Dashboard" },
+          { key: "branding", label: "Branding" },
+          { key: "theme", label: "Theme" },
+          { key: "navigation", label: "Navigation" },
+          { key: "hero", label: "Hero Section" },
+          { key: "ecosystem", label: "Products" },
+          { key: "about", label: "About" },
+          { key: "how", label: "How it works" },
+          { key: "pricing", label: "Pricing" },
+          { key: "cta", label: "Call to Action" },
+          { key: "footer", label: "Footer" },
+          { key: "seo", label: "SEO" },
+          { key: "json", label: "Advanced JSON" },
+        ];
+
+        const setField = (path, value) => {
+          setContent((prev) => setByPath(prev, path, value));
+          // Show save confirmation
+          const saveIndicator = document.createElement('div');
+          saveIndicator.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm';
+          saveIndicator.textContent = 'Changes saved automatically';
+          document.body.appendChild(saveIndicator);
+          setTimeout(() => {
+            saveIndicator.remove();
+          }, 1500);
+        };
+
+        const addNavLink = () => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            next.nav.links = [...(next.nav.links || []), { label: "New", href: "#" }];
+            return next;
+          });
+        };
+
+        const removeNavLink = (idx) => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            next.nav.links = (next.nav.links || []).filter((_, i) => i !== idx);
+            return next;
+          });
+        };
+
+        const moveNavLink = (from, to) => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            next.nav.links = moveItem(next.nav.links || [], from, to);
+            return next;
+          });
+        };
+
+        const addProductCard = () => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            const existingKeys = next.ecosystem.cards.map((c) => c.key);
+            const key = uniqueKey("new-product", existingKeys);
+            next.ecosystem.cards = [
+              ...(next.ecosystem.cards || []),
+              {
+                key,
+                title: "New Product",
+                subtitle: "Short description",
+                bullets: ["Bullet 1", "Bullet 2", "Bullet 3"],
+                cta: { label: "Learn More", href: "#" },
+                badge: "",
+                disabled: false,
+              },
+            ];
+            return next;
+          });
+        };
+
+        const removeProductCard = (idx) => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            if ((next.ecosystem.cards || []).length <= 1) return next;
+            next.ecosystem.cards = next.ecosystem.cards.filter((_, i) => i !== idx);
+            return next;
+          });
+        };
+
+        const moveProductCard = (from, to) => {
+          setContent((prev) => {
+            const next = deepClone(prev);
+            next.ecosystem.cards = moveItem(next.ecosystem.cards || [], from, to);
+            return next;
+          });
+        };
+
+        return (
+          <div className={`fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}`}>
+            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+            <div className="absolute right-0 top-0 h-full w-full max-w-xl bg-white shadow-2xl flex flex-col">
+              <div className="p-4 border-b">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-xs text-slate-500">Superadmin Panel</p>
+                    <h3 className="text-lg font-semibold">Website Customization</h3>
+                    {adminAuth && adminAuth.isAuthenticated && (
+                      <p className="text-xs text-slate-500 mt-1">
+                        Logged in as: {adminAuth.username} • Last login: {new Date(adminAuth.lastLogin).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => setContent(deepClone(DEFAULT_CONTENT))} className="px-3 py-2 text-sm rounded-md border hover:bg-slate-50">
+                      Reset
+                    </button>
+                    {onLogout && (
+                      <button onClick={onLogout} className="px-3 py-2 text-sm rounded-md border hover:bg-slate-50">
+                        Logout
+                      </button>
+                    )}
+                    <button onClick={onClose} className="px-3 py-2 text-sm rounded-md bg-slate-900 text-white">
+                      Close
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Quick Actions */}
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => setTab("dashboard")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "dashboard" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Dashboard
+                  </button>
+                  <button onClick={() => setTab("branding")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "branding" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Branding
+                  </button>
+                  <button onClick={() => setTab("theme")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "theme" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Theme
+                  </button>
+                  <button onClick={() => setTab("hero")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "hero" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Hero
+                  </button>
+                  <button onClick={() => setTab("ecosystem")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "ecosystem" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Products
+                  </button>
+                  <button onClick={() => setTab("pricing")} className={`px-3 py-1.5 text-xs rounded-full ${tab === "pricing" ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                    Pricing
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-3 border-b flex flex-wrap gap-2">
+                {tabs.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => setTab(t.key)}
+                    className={`px-3 py-2 text-sm rounded-md border ${tab === t.key ? "bg-teal-600 text-white border-teal-600" : "hover:bg-slate-50"}`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex-1 overflow-auto p-4">
+                {tab === "dashboard" && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Admin Dashboard</h3>
+                      <p className="text-gray-600">Welcome to your website customization center</p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-6 border border-teal-100">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-teal-800">Quick Actions</h4>
+                          <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <button onClick={() => setTab("branding")} className="w-full text-left p-3 rounded-lg hover:bg-white transition-colors border border-transparent hover:border-teal-200">
+                            <div className="font-medium text-teal-700">Update Branding</div>
+                            <div className="text-sm text-teal-600">Logo, name, and contact info</div>
+                          </button>
+                          <button onClick={() => setTab("theme")} className="w-full text-left p-3 rounded-lg hover:bg-white transition-colors border border-transparent hover:border-teal-200">
+                            <div className="font-medium text-teal-700">Change Theme</div>
+                            <div className="text-sm text-teal-600">Colors and visual style</div>
+                          </button>
+                          <button onClick={() => setTab("hero")} className="w-full text-left p-3 rounded-lg hover:bg-white transition-colors border border-transparent hover:border-teal-200">
+                            <div className="font-medium text-teal-700">Edit Hero</div>
+                            <div className="text-sm text-teal-600">Main headline and call-to-action</div>
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-blue-800">Site Status</h4>
+                          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-blue-700">Products Active</span>
+                            <span className="text-sm font-medium text-blue-800">{content.ecosystem.cards.filter(c => !c.disabled).length}/{content.ecosystem.cards.length}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-blue-700">Navigation Links</span>
+                            <span className="text-sm font-medium text-blue-800">{content.nav.links.length}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-blue-700">Theme Mode</span>
+                            <span className="text-sm font-medium text-blue-800">{darkMode ? 'Dark' : 'Light'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+                      <h4 className="font-semibold text-purple-800 mb-3">Pro Tips</h4>
+                      <ul className="space-y-2 text-sm text-purple-700">
+                        <li>• Use the Theme tab to match your brand colors</li>
+                        <li>• Keep hero text concise and impactful</li>
+                        <li>• Update product cards as you launch new features</li>
+                        <li>• Test all navigation links regularly</li>
+                        <li>• Use SEO tab for better search visibility</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "branding" && (
+                  <div className="space-y-6">
+                    <h4 className="font-semibold text-lg">Brand Identity</h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <Field label="Brand Name" value={content.brand.name} onChange={(v) => setField("brand.name", v)} />
+                        <Field label="Acronym/Tagline" value={content.brand.acronym} onChange={(v) => setField("brand.acronym", v)} />
+                        <Field label="Email Address" value={content.brand.email} onChange={(v) => setField("brand.email", v)} />
+                        <Field label="Location" value={content.brand.location} onChange={(v) => setField("brand.location", v)} />
+                      </div>
+                      <div className="space-y-4">
+                        <Field label="Instagram URL" value={content.brand.instagramUrl} onChange={(v) => setField("brand.instagramUrl", v)} />
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <p className="text-xs text-gray-600 mb-2">Brand Preview:</p>
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-teal-500 flex items-center justify-center">
+                              <span className="text-white font-bold text-xl">{content.brand.name.charAt(0)}</span>
+                            </div>
+                            <div>
+                              <div className="font-bold text-gray-900">{content.brand.name}</div>
+                              <div className="text-sm text-gray-600">{content.brand.acronym}</div>
+                              <div className="text-xs text-gray-500">{content.brand.email}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "navigation" && (
+                  <div className="space-y-4">
+                    <h4 className="font-semibold">Navigation links</h4>
+                    <p className="text-xs text-slate-500">Edit labels + hrefs. Use #anchors or full URLs.</p>
+                    <div className="space-y-3">
+                      {(content.nav.links || []).map((l, idx) => (
+                        <div key={idx} className="border rounded-xl p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className="font-medium text-sm">Link {idx + 1}</p>
+                            <div className="flex gap-2">
+                              <button className="px-2 py-1 text-xs border rounded" disabled={idx === 0} onClick={() => moveNavLink(idx, idx - 1)}>
+                                Up
+                              </button>
+                              <button
+                                className="px-2 py-1 text-xs border rounded"
+                                disabled={idx === (content.nav.links || []).length - 1}
+                                onClick={() => moveNavLink(idx, idx + 1)}
+                              >
+                                Down
+                              </button>
+                              <button className="px-2 py-1 text-xs border rounded" onClick={() => removeNavLink(idx)}>
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                          <Field label="Label" value={l.label} onChange={(v) => setField(`nav.links.${idx}.label`, v)} />
+                          <Field label="Href" value={l.href} onChange={(v) => setField(`nav.links.${idx}.href`, v)} placeholder="#pricing or https://..." />
+                        </div>
+                      ))}
+                    </div>
+                    <button className="w-full px-3 py-2 rounded-md border hover:bg-slate-50" onClick={addNavLink}>
+                      + Add nav link
+                    </button>
+                    <Divider />
+                    <h4 className="font-semibold">Navigation CTAs</h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="text-sm font-medium text-gray-700 mb-2">Left CTA (Sign In)</h5>
+                        <Field label="Label" value={content.nav.ctas.left.label} onChange={(v) => setField("nav.ctas.left.label", v)} />
+                        <Field label="Href" value={content.nav.ctas.left.href} onChange={(v) => setField("nav.ctas.left.href", v)} />
+                      </div>
+                      <div>
+                        <h5 className="text-sm font-medium text-gray-700 mb-2">Right CTA (Request Demo)</h5>
+                        <Field label="Label" value={content.nav.ctas.right.label} onChange={(v) => setField("nav.ctas.right.label", v)} />
+                        <Field label="Href" value={content.nav.ctas.right.href} onChange={(v) => setField("nav.ctas.right.href", v)} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "theme" && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h4 className="font-semibold text-lg">Theme Customization</h4>
+                      <p className="text-sm text-gray-600">Customize your website's visual appearance</p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <h5 className="font-medium text-gray-800">Primary Colors</h5>
+                        <ColorField label="Primary Color" value={content.theme.primary} onChange={(v) => setField("theme.primary", v)} />
+                        <ColorField label="Primary Hover" value={content.theme.primaryHover} onChange={(v) => setField("theme.primaryHover", v)} />
+                        <ColorField label="Footer Background" value={content.theme.footerBg} onChange={(v) => setField("theme.footerBg", v)} />
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <h5 className="font-medium text-gray-800">Background Colors</h5>
+                        <ColorField label="Page Background" value={content.theme.pageBg} onChange={(v) => setField("theme.pageBg", v)} />
+                        <ColorField label="Surface Background" value={content.theme.surfaceBg} onChange={(v) => setField("theme.surfaceBg", v)} />
+                        <ColorField label="Card Background" value={content.theme.cardBg} onChange={(v) => setField("theme.cardBg", v)} />
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <h5 className="font-medium text-gray-800">Text Colors</h5>
+                        <ColorField label="Main Text" value={content.theme.text} onChange={(v) => setField("theme.text", v)} />
+                        <ColorField label="Muted Text" value={content.theme.muted} onChange={(v) => setField("theme.muted", v)} />
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <h5 className="font-medium text-gray-800">Borders & Accents</h5>
+                        <ColorField label="Border Color" value={content.theme.border} onChange={(v) => setField("theme.border", v)} />
+                        <ColorField label="Dark Mode Page BG" value={content.theme.darkPageBg} onChange={(v) => setField("theme.darkPageBg", v)} />
+                        <ColorField label="Dark Mode Text" value={content.theme.darkText} onChange={(v) => setField("theme.darkText", v)} />
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-100">
+                      <h5 className="font-semibold text-purple-800 mb-2">Theme Presets</h5>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => {
+                            const tealTheme = {
+                              primary: "#0D9488", primaryHover: "#14B8A6", footerBg: "#0F766E",
+                              pageBg: "#FFFFFF", surfaceBg: "#F8FAFC", cardBg: "#FFFFFF",
+                              text: "#0F172A", muted: "#64748B", border: "#E2E8F0",
+                              darkPageBg: "#0F172A", darkText: "#F1F5F9"
+                            };
+                            Object.keys(tealTheme).forEach(key => setField(`theme.${key}`, tealTheme[key]));
+                          }}
+                          className="px-3 py-1 text-xs bg-teal-500 text-white rounded-full hover:bg-teal-600"
+                        >
+                          Teal (Default)
+                        </button>
+                        <button
+                          onClick={() => {
+                            const blueTheme = {
+                              primary: "#3B82F6", primaryHover: "#2563EB", footerBg: "#1E40AF",
+                              pageBg: "#FFFFFF", surfaceBg: "#F8FAFC", cardBg: "#FFFFFF",
+                              text: "#0F172A", muted: "#64748B", border: "#E2E8F0",
+                              darkPageBg: "#0F172A", darkText: "#F1F5F9"
+                            };
+                            Object.keys(blueTheme).forEach(key => setField(`theme.${key}`, blueTheme[key]));
+                          }}
+                          className="px-3 py-1 text-xs bg-blue-500 text-white rounded-full hover:bg-blue-600"
+                        >
+                          Blue
+                        </button>
+                        <button
+                          onClick={() => {
+                            const purpleTheme = {
+                              primary: "#8B5CF6", primaryHover: "#7C3AED", footerBg: "#5B21B6",
+                              pageBg: "#FFFFFF", surfaceBg: "#F8FAFC", cardBg: "#FFFFFF",
+                              text: "#0F172A", muted: "#64748B", border: "#E2E8F0",
+                              darkPageBg: "#0F172A", darkText: "#F1F5F9"
+                            };
+                            Object.keys(purpleTheme).forEach(key => setField(`theme.${key}`, purpleTheme[key]));
+                          }}
+                          className="px-3 py-1 text-xs bg-purple-500 text-white rounded-full hover:bg-purple-600"
+                        >
+                          Purple
+                        </button>
+                        <button
+                          onClick={() => {
+                            const greenTheme = {
+                              primary: "#22C55E", primaryHover: "#16A34A", footerBg: "#15803D",
+                              pageBg: "#FFFFFF", surfaceBg: "#F8FAFC", cardBg: "#FFFFFF",
+                              text: "#0F172A", muted: "#64748B", border: "#E2E8F0",
+                              darkPageBg: "#0F172A", darkText: "#F1F5F9"
+                            };
+                            Object.keys(greenTheme).forEach(key => setField(`theme.${key}`, greenTheme[key]));
+                          }}
+                          className="px-3 py-1 text-xs bg-green-500 text-white rounded-full hover:bg-green-600"
+                        >
+                          Green
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "hero" && (
+                  <div className="space-y-6">
+                    <h4 className="font-semibold text-lg">Hero Section</h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <Field label="Headline Prefix" value={content.hero.headlinePrefix} onChange={(v) => setField("hero.headlinePrefix", v)} />
+                        <Field label="Headline Accent (Highlighted)" value={content.hero.headlineAccent} onChange={(v) => setField("hero.headlineAccent", v)} />
+                        <Area label="Hero Paragraph" value={content.hero.body} onChange={(v) => setField("hero.body", v)} />
+                        <Field label="Acronym Expansion" value={content.brand.acronym} onChange={(v) => setField("brand.acronym", v)} />
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-50 to-teal-50 rounded-xl p-6 border border-blue-100">
+                        <h5 className="font-semibold text-blue-800 mb-3">Live Preview</h5>
+                        <div className="space-y-3">
+                          <div className="text-2xl font-bold text-gray-900">
+                            {content.hero.headlinePrefix} <span className="text-teal-600 font-bold">{content.hero.headlineAccent}</span>
+                          </div>
+                          <div className="text-sm text-gray-600">{content.hero.body}</div>
+                          <div className="flex gap-2 mt-4">
+                            <button className="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                              {content.hero.primaryCta.label}
+                            </button>
+                            <button className="border border-teal-600 text-teal-600 px-4 py-2 rounded-lg text-sm font-semibold">
+                              {content.hero.secondaryCta.label}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Divider />
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 className="font-medium text-gray-800 mb-3">Call to Action Buttons</h5>
+                        <Field label="Primary CTA Label" value={content.hero.primaryCta.label} onChange={(v) => setField("hero.primaryCta.label", v)} />
+                        <Field label="Primary CTA Link" value={content.hero.primaryCta.href} onChange={(v) => setField("hero.primaryCta.href", v)} />
+                        <Field label="Secondary CTA Label" value={content.hero.secondaryCta.label} onChange={(v) => setField("hero.secondaryCta.label", v)} />
+                        <Field label="Secondary CTA Link" value={content.hero.secondaryCta.href} onChange={(v) => setField("hero.secondaryCta.href", v)} />
+                      </div>
+                      <div>
+                        <h5 className="font-medium text-gray-800 mb-3">Trust Indicators</h5>
+                        <Field label="Trust Box Title" value={content.hero.trustTitle} onChange={(v) => setField("hero.trustTitle", v)} />
+                        <ListEditor label="Trust bullets" items={content.hero.trustBullets} onChange={(items) => setField("hero.trustBullets", items)} />
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border border-orange-100">
+                      <h5 className="font-semibold text-orange-800 mb-2">Hero Section Tips</h5>
+                      <ul className="text-sm text-orange-700 space-y-1">
+                        <li>• Keep headline under 8 words for maximum impact</li>
+                        <li>• Use action-oriented CTA buttons</li>
+                        <li>• Include 3-5 trust indicators</li>
+                        <li>• Make sure the value proposition is clear</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "ecosystem" && (
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold text-lg">Product Ecosystem</h4>
+                      <p className="text-sm text-gray-600">Manage your product offerings and services</p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <Field label="Section Title" value={content.ecosystem.title} onChange={(v) => setField("ecosystem.title", v)} />
+                        <Area label="Section Subtitle" value={content.ecosystem.subtitle} onChange={(v) => setField("ecosystem.subtitle", v)} />
+                      </div>
+                      <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 border border-green-100">
+                        <h5 className="font-semibold text-green-800 mb-3">Section Preview</h5>
+                        <div className="space-y-2">
+                          <div className="text-xl font-bold text-gray-900">{content.ecosystem.title}</div>
+                          <div className="text-sm text-gray-600">{content.ecosystem.subtitle}</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Divider />
+                    
+                    <div className="flex justify-between items-center">
+                      <h5 className="font-medium text-gray-800">Product Cards</h5>
+                      <button className="btn-modern px-4 py-2 rounded-md font-semibold text-white" style={{ backgroundColor: theme.primary }} onClick={addProductCard}>
+                        + Add Product
+                      </button>
+                    </div>
+                    
+                    <div className="grid gap-4">
+                      {content.ecosystem.cards.map((card, idx) => (
+                        <div key={card.key} className="border rounded-xl p-4 space-y-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-semibold text-lg">{card.title}</p>
+                              <p className="text-xs text-slate-500">Key: {card.key}</p>
+                              {card.badge && <span className="inline-block px-2 py-1 text-xs bg-teal-100 text-teal-800 rounded-full mt-1">{card.badge}</span>}
+                            </div>
+                            <div className="flex gap-2">
+                              <button className="px-2 py-1 text-xs border rounded" disabled={idx === 0} onClick={() => moveProductCard(idx, idx - 1)}>
+                                ↑
+                              </button>
+                              <button
+                                className="px-2 py-1 text-xs border rounded"
+                                disabled={idx === content.ecosystem.cards.length - 1}
+                                onClick={() => moveProductCard(idx, idx + 1)}
+                              >
+                                ↓
+                              </button>
+                              <button className="px-2 py-1 text-xs border rounded" onClick={() => removeProductCard(idx)}>
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                              <Field label="Title" value={card.title} onChange={(v) => setField(`ecosystem.cards.${idx}.title`, v)} />
+                              <Field label="Subtitle" value={card.subtitle} onChange={(v) => setField(`ecosystem.cards.${idx}.subtitle`, v)} />
+                              <Field
+                                label="Key (unique id)"
+                                value={card.key}
+                                onChange={(v) => {
+                                  const existing = content.ecosystem.cards.map((c, i) => (i === idx ? null : c.key)).filter(Boolean);
+                                  const nextKey = uniqueKey(v || card.title, existing);
+                                  setField(`ecosystem.cards.${idx}.key`, nextKey);
+                                }}
+                                placeholder="e.g., carestint"
+                              />
+                              <Field label="Badge" value={card.badge} onChange={(v) => setField(`ecosystem.cards.${idx}.badge`, v)} placeholder="e.g., Live / Coming Soon" />
+                              <Toggle label="Disabled" checked={!!card.disabled} onChange={(v) => setField(`ecosystem.cards.${idx}.disabled`, v)} />
+                            </div>
+                            <div className="space-y-3">
+                              <ListEditor label="Feature Bullets" items={card.bullets} onChange={(items) => setField(`ecosystem.cards.${idx}.bullets`, items)} />
+                              <Field label="CTA Button Label" value={card.cta.label} onChange={(v) => setField(`ecosystem.cards.${idx}.cta.label`, v)} />
+                              <Field label="CTA Button Link" value={card.cta.href} onChange={(v) => setField(`ecosystem.cards.${idx}.cta.href`, v)} />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-100">
+                      <h5 className="font-semibold text-purple-800 mb-2">Product Management Tips</h5>
+                      <ul className="text-sm text-purple-700 space-y-1">
+                        <li>• Use clear, descriptive product names</li>
+                        <li>• Keep feature bullets concise and benefit-focused</li>
+                        <li>• Use badges to highlight special status (Live, Coming Soon)</li>
+                        <li>• Disable products that aren't ready yet</li>
+                        <li>• Order products by importance or launch sequence</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "about" && (
+                  <div className="space-y-4">
+                    <Field label="Title" value={content.about.title} onChange={(v) => setField("about.title", v)} />
+                    <Area label="Paragraph 1" value={content.about.p1} onChange={(v) => setField("about.p1", v)} />
+                    <Area label="Paragraph 2" value={content.about.p2} onChange={(v) => setField("about.p2", v)} />
+                    <Divider />
+                    <ListEditor label="Bullets" items={content.about.bullets} onChange={(items) => setField("about.bullets", items)} />
+                    <Divider />
+                    <Field label="Primary CTA label" value={content.about.primaryCta.label} onChange={(v) => setField("about.primaryCta.label", v)} />
+                    <Field label="Primary CTA link" value={content.about.primaryCta.href} onChange={(v) => setField("about.primaryCta.href", v)} />
+                    <Field label="Secondary CTA label" value={content.about.secondaryCta.label} onChange={(v) => setField("about.secondaryCta.label", v)} />
+                    <Field label="Secondary CTA link" value={content.about.secondaryCta.href} onChange={(v) => setField("about.secondaryCta.href", v)} />
+                  </div>
+                )}
+
+                {tab === "how" && (
+                  <div className="space-y-4">
+                    <Field label="Title" value={content.how.title} onChange={(v) => setField("how.title", v)} />
+                    <Divider />
+                    {content.how.steps.map((s, idx) => (
+                      <div key={idx} className="border rounded-xl p-3 space-y-3">
+                        <Field label={`Step ${idx + 1} title`} value={s.title} onChange={(v) => setField(`how.steps.${idx}.title`, v)} />
+                        <Field label={`Step ${idx + 1} description`} value={s.desc} onChange={(v) => setField(`how.steps.${idx}.desc`, v)} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {tab === "cta" && (
+                  <div className="space-y-6">
+                    <h4 className="font-semibold text-lg">Call to Action Section</h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <Field label="Main Title" value={content.cta.title} onChange={(v) => setField("cta.title", v)} />
+                        <Area label="Subtitle" value={content.cta.subtitle} onChange={(v) => setField("cta.subtitle", v)} />
+                        <Field label="Button Label" value={content.cta.button.label} onChange={(v) => setField("cta.button.label", v)} />
+                        <Field label="Button Link" value={content.cta.button.href} onChange={(v) => setField("cta.button.href", v)} />
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-100">
+                        <h5 className="font-semibold text-orange-800 mb-3">Preview</h5>
+                        <div className="space-y-2">
+                          <div className="text-lg font-bold text-gray-900">{content.cta.title}</div>
+                          <div className="text-sm text-gray-600">{content.cta.subtitle}</div>
+                          <div className="mt-4">
+                            <button className="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition-colors">
+                              {content.cta.button.label}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "seo" && (
+                  <div className="space-y-6">
+                    <h4 className="font-semibold text-lg">Search Engine Optimization</h4>
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <Field label="Page Title" value={document.title} onChange={(v) => document.title = v} />
+                        <Field label="Meta Description" value={content.hero.body} onChange={(v) => setField("hero.body", v)} />
+                      </div>
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 border border-green-100">
+                        <h5 className="font-semibold text-green-800 mb-2">SEO Tips</h5>
+                        <ul className="text-sm text-green-700 space-y-1">
+                          <li>• Keep page title under 60 characters</li>
+                          <li>• Meta description should be 150-160 characters</li>
+                          <li>• Use relevant keywords naturally</li>
+                          <li>• Include your main value proposition</li>
+                        </ul>
+                      </div>
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-2">Keywords</label>
+                          <textarea
+                            className="w-full border rounded-md px-3 py-2 text-sm min-h-[80px]"
+                            placeholder="healthcare technology, medical staffing, clinic management..."
+                            value={content.brand.name + ", " + content.brand.acronym}
+                            onChange={(e) => setField("brand.name", e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-2">Social Media Preview</label>
+                          <div className="bg-white p-3 rounded border">
+                            <div className="text-sm font-semibold text-blue-600">{content.brand.name}</div>
+                            <div className="text-xs text-gray-600 truncate">{content.hero.body}</div>
+                            <div className="text-xs text-gray-400 mt-1">gethure.com</div>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-2">Analytics</label>
+                          <div className="text-xs text-gray-600">
+                            Add your Google Analytics tracking code in the HTML head section for better insights.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {tab === "pricing" && (
+                  <div className="space-y-4">
+                    <Field label="Title" value={content.pricing.title} onChange={(v) => setField("pricing.title", v)} />
+                    <Area label="Subtitle" value={content.pricing.subtitle} onChange={(v) => setField("pricing.subtitle", v)} />
+                    <Field label="Bundle note" value={content.pricing.bundleNote} onChange={(v) => setField("pricing.bundleNote", v)} />
+                    <Divider />
+                    <h4 className="font-semibold">Core & Care tiers</h4>
+                    {(["core", "care"]).map((k) => (
+                      <div key={k} className="border rounded-xl p-3">
+                        <div className="flex items-center justify-between">
+                          <p className="font-semibold">{content.pricing.toggles[k].productName}</p>
+                          <span className="text-xs text-slate-500">toggle: {k}</span>
+                        </div>
+                        <div className="mt-3 space-y-3">
+                          <Field label="Toggle label" value={content.pricing.toggles[k].label} onChange={(v) => setField(`pricing.toggles.${k}.label`, v)} />
+                          <Field label="Product name" value={content.pricing.toggles[k].productName} onChange={(v) => setField(`pricing.toggles.${k}.productName`, v)} />
+                          <Field label="Product description" value={content.pricing.toggles[k].productDesc} onChange={(v) => setField(`pricing.toggles.${k}.productDesc`, v)} />
+                          <Divider />
+                          {content.pricing.toggles[k].tiers.map((t, idx) => (
+                            <div key={idx} className="rounded-lg border p-3 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <p className="font-medium">{t.title}</p>
+                                <Toggle label="Highlight" checked={!!t.highlight} onChange={(v) => setField(`pricing.toggles.${k}.tiers.${idx}.highlight`, v)} />
+                              </div>
+                              <Field label="Tier title" value={t.title} onChange={(v) => setField(`pricing.toggles.${k}.tiers.${idx}.title`, v)} />
+                              <Field label="Price" value={t.price} onChange={(v) => setField(`pricing.toggles.${k}.tiers.${idx}.price`, v)} />
+                              <Field label="Description" value={t.desc} onChange={(v) => setField(`pricing.toggles.${k}.tiers.${idx}.desc`, v)} />
+                              <ListEditor label="Meta bullets" items={t.meta} onChange={(items) => setField(`pricing.toggles.${k}.tiers.${idx}.meta`, items)} />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    <Divider />
+                    <h4 className="font-semibold">Marketplace blocks</h4>
+                    <MarketplaceEditor label="CareStint" data={content.pricing.marketplace.carestint} onChange={(next) => setField("pricing.marketplace.carestint", next)} />
+                    <MarketplaceEditor label="Clinexo" data={content.pricing.marketplace.clinexo} onChange={(next) => setField("pricing.marketplace.clinexo", next)} />
+                  </div>
+                )}
+
+                {tab === "footer" && (
+                  <div className="space-y-4">
+                    <Field label="Brand name" value={content.brand.name} onChange={(v) => setField("brand.name", v)} />
+                    <Field label="Acronym expansion" value={content.brand.acronym} onChange={(v) => setField("brand.acronym", v)} />
+                    <Field label="Email" value={content.brand.email} onChange={(v) => setField("brand.email", v)} />
+                    <Field label="Location" value={content.brand.location} onChange={(v) => setField("brand.location", v)} />
+                    <Field label="Instagram URL" value={content.brand.instagramUrl} onChange={(v) => setField("brand.instagramUrl", v)} />
+                    <Divider />
+                    <p className="text-xs text-slate-500">Company links editor (labels + hrefs)</p>
+                    {(content.footer.companyLinks || []).map((l, idx) => (
+                      <div key={idx} className="border rounded-xl p-3 space-y-2">
+                        <Field label="Label" value={l.label} onChange={(v) => setField(`footer.companyLinks.${idx}.label`, v)} />
+                        <Field label="Href" value={l.href} onChange={(v) => setField(`footer.companyLinks.${idx}.href`, v)} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {tab === "json" && (
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold text-lg">Advanced JSON Editor</h4>
+                      <p className="text-sm text-gray-600">Edit the complete website configuration</p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border border-orange-100">
+                      <h5 className="font-semibold text-orange-800 mb-2">Warning</h5>
+                      <p className="text-sm text-orange-700">This is for advanced users. Incorrect JSON will break the website.</p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-2">Raw JSON Configuration</label>
+                        <textarea className="w-full h-96 font-mono text-xs border rounded-lg p-3" value={raw} onChange={(e) => setRaw(e.target.value)} />
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <h5 className="font-medium text-gray-800 mb-2">Actions</h5>
+                          <div className="space-y-2">
+                            <button
+                              className="w-full px-4 py-2 rounded-md bg-teal-600 text-white font-semibold hover:bg-teal-700"
+                              onClick={() => {
+                                const parsed = safeParse(raw);
+                                if (!parsed) {
+                                  alert('Invalid JSON format. Please check your syntax.');
+                                  return;
+                                }
+                                setContent(normalizeContent(parsed));
+                              }}
+                            >
+                              Apply JSON Changes
+                            </button>
+                            <button
+                              className="w-full px-4 py-2 rounded-md border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50"
+                              onClick={() => navigator.clipboard?.writeText(raw)}
+                            >
+                              Copy JSON
+                            </button>
+                            <button
+                              className="w-full px-4 py-2 rounded-md border border-red-300 text-red-700 font-semibold hover:bg-red-50"
+                              onClick={() => {
+                                if (confirm('This will reset all changes to default. Continue?')) {
+                                  setContent(deepClone(DEFAULT_CONTENT));
+                                  setRaw(JSON.stringify(deepClone(DEFAULT_CONTENT), null, 2));
+                                }
+                              }}
+                            >
+                              Reset to Default
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-100">
+                          <h5 className="font-semibold text-blue-800 mb-2">JSON Structure</h5>
+                          <ul className="text-sm text-blue-700 space-y-1">
+                            <li>• theme: Color scheme and styling</li>
+                            <li>• brand: Company information</li>
+                            <li>• nav: Navigation menu</li>
+                            <li>• hero: Main landing section</li>
+                            <li>• ecosystem: Product cards</li>
+                            <li>• pricing: Pricing tables</li>
+                            <li>• footer: Contact and links</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t text-xs text-slate-500">
+                Saved automatically to your browser (localStorage). Add <span className="font-mono">?admin=1</span> to always show this editor.
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function Divider() {
+        return <div className="h-px bg-slate-200 my-2" />;
+      }
+
+      function Field({ label, value, onChange, placeholder }) {
+        return (
+          <label className="block">
+            <span className="text-xs font-medium text-slate-700">{label}</span>
+            <input
+              className="mt-1 w-full border rounded-md px-3 py-2 text-sm"
+              value={value ?? ""}
+              placeholder={placeholder}
+              onChange={(e) => onChange(e.target.value)}
+            />
+          </label>
+        );
+      }
+
+      function ColorField({ label, value, onChange }) {
+        return (
+          <div className="flex items-center justify-between gap-3 border rounded-md p-3">
+            <div>
+              <p className="text-sm font-medium">{label}</p>
+              <p className="text-xs text-slate-500 font-mono">{value}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="h-9 w-12" />
+              <input
+                className="h-9 w-36 border rounded-md px-2 text-sm font-mono"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+              />
+            </div>
+          </div>
+        );
+      }
+
+      function Area({ label, value, onChange }) {
+        return (
+          <label className="block">
+            <span className="text-xs font-medium text-slate-700">{label}</span>
+            <textarea
+              className="mt-1 w-full border rounded-md px-3 py-2 text-sm min-h-[96px]"
+              value={value ?? ""}
+              onChange={(e) => onChange(e.target.value)}
+            />
+          </label>
+        );
+      }
+
+      function Toggle({ label, checked, onChange }) {
+        return (
+          <button
+            type="button"
+            onClick={() => onChange(!checked)}
+            className={`inline-flex items-center gap-2 text-xs px-3 py-2 rounded-md border ${
+              checked ? "bg-teal-600 text-white border-teal-600" : "hover:bg-slate-50"
+            }`}
+            aria-pressed={checked}
+          >
+            {label}: {checked ? "On" : "Off"}
+          </button>
+        );
+      }
+
+      function ListEditor({ label, items, onChange }) {
+        const [draft, setDraft] = useState((items || []).join("\n"));
+
+        useEffect(() => {
+          setDraft((items || []).join("\n"));
+        }, [items]);
+
+        return (
+          <div>
+            <p className="text-xs font-medium text-slate-700">{label}</p>
+            <p className="text-[11px] text-slate-500">One item per line.</p>
+            <textarea
+              className="mt-2 w-full border rounded-md px-3 py-2 text-sm min-h-[120px]"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+            />
+            <div className="mt-2 flex gap-2">
+              <button
+                type="button"
+                className="px-3 py-2 text-sm rounded-md bg-teal-600 text-white"
+                onClick={() => {
+                  const next = draft
+                    .split("\n")
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                  onChange(next);
+                }}
+              >
+                Apply
+              </button>
+              <button type="button" className="px-3 py-2 text-sm rounded-md border" onClick={() => setDraft((items || []).join("\n"))}>
+                Revert
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      function MarketplaceEditor({ label, data, onChange }) {
+        const [local, setLocal] = useState(data);
+
+        useEffect(() => setLocal(data), [data]);
+
+        return (
+          <div className="border rounded-xl p-3 space-y-3">
+            <p className="font-semibold">{label}</p>
+            <Field label="Title" value={local.title} onChange={(v) => setLocal((p) => ({ ...p, title: v }))} />
+            <Field label="Subtitle" value={local.subtitle} onChange={(v) => setLocal((p) => ({ ...p, subtitle: v }))} />
+            <Field label="Badge" value={local.badge} onChange={(v) => setLocal((p) => ({ ...p, badge: v }))} />
+            <Area label="Body" value={local.body} onChange={(v) => setLocal((p) => ({ ...p, body: v }))} />
+            <ListEditor label="Bullets" items={local.bullets} onChange={(items) => setLocal((p) => ({ ...p, bullets: items }))} />
+            <Divider />
+            <Field label="CTA label" value={local.cta.label} onChange={(v) => setLocal((p) => ({ ...p, cta: { ...p.cta, label: v } }))} />
+            <Field label="CTA link" value={local.cta.href} onChange={(v) => setLocal((p) => ({ ...p, cta: { ...p.cta, href: v } }))} />
+            <button type="button" className="w-full px-3 py-2 rounded-md bg-teal-600 text-white" onClick={() => onChange(local)}>
+              Save {label}
+            </button>
+          </div>
+        );
+      }
+
+      // Mount
+      ReactDOM.createRoot(document.getElementById("root")).render(<HUREHomepage />);
+    </script>
+  </body>
+</html>
